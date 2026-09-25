@@ -19,7 +19,17 @@ Repository-specific contracts and testing commands stay in each project's own gu
 
 ## Install
 
-From this checkout, use Python 3 to link all skills globally for Codex:
+Install with [npx skills](https://github.com/vercel-labs/skills), which supports Claude Code, Codex, and other agents:
+
+```sh
+npx skills add oliver-im/skills
+```
+
+Add `-g` to install for your user instead of the current project, `-a claude-code` or `-a codex` to choose agents, or `--skill prune-tests` to install one skill.
+
+### From a checkout
+
+To edit the skills, link them from a clone instead. Use Python 3 to link all skills globally for Codex:
 
 ```sh
 python3 scripts/install.py
@@ -37,13 +47,7 @@ Each link points directly into this checkout, so edits and `git pull` update the
 
 Matching links are left alone. The installer checks every destination before adding links and refuses to replace existing files, directories, or links to another source. It installs skill folders only; hooks need their own agent-specific configuration.
 
-The dotfiles `install.sh` also runs this installer for both Codex and Claude Code. It defaults to a sibling `skills` checkout; set `SKILLS_REPO_DIR` to use another location on a particular machine:
-
-```sh
-SKILLS_REPO_DIR="$HOME/src/skills" /path/to/dotfiles/install.sh
-```
-
-The collection also works with [npx skills](https://github.com/vercel-labs/skills), whose installs use a separate copy instead of a live link to this checkout.
+## Usage
 
 `write-tests` also applies whenever an agent writes tests. To run a gap audit or a pruning sweep, ask explicitly, for example:
 
