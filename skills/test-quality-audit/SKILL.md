@@ -13,7 +13,8 @@ Do not optimize for test count, coverage percentage, or deleted lines.
 
 Use the requested scope. If it is broad, start with a coherent area and make
 partial coverage explicit. Read applicable repository guidance and testing docs,
-then inspect the relevant tests, production paths, fixtures, and history.
+then inspect the relevant tests, production paths, fixtures, history, and
+known-issue records.
 Identify critical behaviors, supported interfaces, and reasons for unusual tests.
 Verify these explanations against the code; documentation is context, not an
 automatic exemption.
@@ -34,8 +35,10 @@ before or after implementation does not establish its value.
 
 Look for plausible wrong behavior that would still pass. Useful leads include
 expectations calculated by the code under test, mocks supplying the asserted
-behavior, comparisons that discard meaningful relationships, and omitted
-boundaries. Also examine duplicated assertions and costly test support. These
+behavior, comparisons that discard meaningful relationships, omitted
+boundaries, and limits that one component produces and another enforces.
+Failure-path tests may inject their fault before the side effects they claim to
+clean up. Also examine duplicated assertions and costly test support. These
 are investigation prompts, not automatic deletion rules.
 
 Constants, serialization, call ordering, and fixture checks can enforce real
@@ -67,6 +70,7 @@ limitations; a no-change result is valid.
 
 When implementing changes, establish replacement protection before removing old
 assertions. For a regression check, demonstrate failure on the buggy behavior
-and success on the repair when practical. Run focused checks and required
+and success on the repair when practical, under the settings where the check
+runs, such as CI's time zone or platform. Run focused checks and required
 repository gates. Review changes to expected outputs deliberately, and preserve
 existing user work throughout.
