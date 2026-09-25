@@ -14,32 +14,34 @@ across projects and machines.
 - `skills/`: self-contained skill directories, each with a `SKILL.md`. Keep any
   skill-specific scripts, references, or assets alongside its instructions.
 - `hooks/`: agent lifecycle hooks and their setup instructions, as they are added.
-- `scripts/`: installation and other utilities shared by the collection.
+- `scripts/`: utilities shared by the collection, as they are added.
 
 Repository-specific contracts and testing commands stay in each project's own
 guidance. The shared skills discover and use that context.
 
 ## Install
 
-Run from this checkout with Python 3:
+Use the [Skills CLI](https://github.com/vercel-labs/skills) with Node.js and npm.
+From this checkout, install all skills globally for Codex:
 
 ```sh
-python3 scripts/install.py
+npx skills add . --global --agent codex --skill '*'
 ```
 
-This links each skill into `$CODEX_HOME/skills`, or `~/.codex/skills` when
-`CODEX_HOME` is unset. Edits in this checkout are reflected through the links.
-Keep the checkout at its installed location, or relink after moving it.
-
-To choose another skill directory:
+To include Claude Code, use `--agent codex claude-code`. To select only the audit
+skill, use `--skill test-quality-audit`. Preview available skills with:
 
 ```sh
-python3 scripts/install.py --target-dir ~/.claude/skills
+npx skills add . --list
 ```
 
-The installer leaves matching links alone and refuses to replace existing files,
-directories, or links to a different source. It installs skill folders only;
-hooks need their own agent-specific configuration.
+The CLI installs a copy and links agent directories to that installed copy.
+After editing this checkout or pulling changes, rerun the install command to
+refresh it. Hooks need their own agent-specific configuration.
+
+For live development, a direct symlink from an agent's skill directory to a skill
+in this checkout makes edits immediately available. Keep the checkout at a stable
+path when using that approach.
 
 Use the audit skill by asking, for example:
 
