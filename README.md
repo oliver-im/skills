@@ -15,34 +15,48 @@ across projects and machines.
 - `skills/`: self-contained skill directories, each with a `SKILL.md`. Keep any
   skill-specific scripts, references, or assets alongside its instructions.
 - `hooks/`: agent lifecycle hooks and their setup instructions, as they are added.
-- `scripts/`: utilities shared by the collection, as they are added.
+- `scripts/`: installation and other utilities shared by the collection.
 
 Repository-specific contracts and testing commands stay in each project's own
 guidance. The shared skills discover and use that context.
 
 ## Install
 
-Use the [Skills CLI](https://github.com/vercel-labs/skills) with Node.js and npm.
-From this checkout, install all skills globally for Codex:
+From this checkout, use Python 3 to link all skills globally for Codex:
 
 ```sh
-npx skills add . --global --agent codex --skill '*'
+python3 scripts/install.py
 ```
 
-To include Claude Code, use `--agent codex claude-code`. To select only the writing
-skill, use `--skill write-tests`. Preview available skills with:
+To install for Claude Code as well:
 
 ```sh
-npx skills add . --list
+python3 scripts/install.py --target-dir ~/.claude/skills
 ```
 
-The CLI installs a copy and links agent directories to that installed copy.
-After editing this checkout or pulling changes, rerun the install command to
-refresh it. Hooks need their own agent-specific configuration.
+The default destination is `$CODEX_HOME/skills`, or `~/.codex/skills` when
+`CODEX_HOME` is unset. Use `--target-dir` for any other agent's skill directory.
+The installer uses only the Python standard library.
 
-For live development, a direct symlink from an agent's skill directory to a skill
-in this checkout makes edits immediately available. Keep the checkout at a stable
-path when using that approach.
+Each link points directly into this checkout, so edits and `git pull` update the
+linked files immediately. Rerun the installer when adding skills. Keep the
+checkout at its installed location; links use absolute paths.
+
+Matching links are left alone. The installer checks every destination before
+adding links and refuses to replace existing files, directories, or links to
+another source. It installs skill folders only; hooks need their own
+agent-specific configuration.
+
+The dotfiles `install.sh` also runs this installer for both Codex and Claude Code.
+It defaults to a sibling `skills` checkout; set `SKILLS_REPO_DIR` to use another
+location on a particular machine:
+
+```sh
+SKILLS_REPO_DIR="$HOME/src/skills" /path/to/dotfiles/install.sh
+```
+
+The collection also works with [npx skills](https://github.com/vercel-labs/skills),
+whose installs use a separate copy instead of a live link to this checkout.
 
 `write-tests` also applies whenever an agent writes tests. To run a gap audit
 or a pruning sweep, ask explicitly, for example:
