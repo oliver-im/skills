@@ -7,7 +7,8 @@ across projects and machines.
 
 | Skill | Purpose |
 | --- | --- |
-| [test-quality-audit](skills/test-quality-audit/SKILL.md) | Review tests for weak assertions, missing protection, and costly redundancy. |
+| [write-tests](skills/write-tests/SKILL.md) | Add or strengthen only tests that catch credible failures; audit code for missing protection. |
+| [prune-tests](skills/prune-tests/SKILL.md) | Give every existing test a verdict and remove or merge the ones that add no protection. |
 
 ## Layout
 
@@ -28,8 +29,8 @@ From this checkout, install all skills globally for Codex:
 npx skills add . --global --agent codex --skill '*'
 ```
 
-To include Claude Code, use `--agent codex claude-code`. To select only the audit
-skill, use `--skill test-quality-audit`. Preview available skills with:
+To include Claude Code, use `--agent codex claude-code`. To select only the writing
+skill, use `--skill write-tests`. Preview available skills with:
 
 ```sh
 npx skills add . --list
@@ -43,10 +44,12 @@ For live development, a direct symlink from an agent's skill directory to a skil
 in this checkout makes edits immediately available. Keep the checkout at a stable
 path when using that approach.
 
-Use the audit skill by asking, for example:
+`write-tests` also applies whenever an agent writes tests. To run a gap audit
+or a pruning sweep, ask explicitly, for example:
 
 ```text
-Use test-quality-audit to review the tests in this repository and recommend improvements.
+Use write-tests to find contracts in this repository that the tests do not protect.
+Use prune-tests to sweep the tests in this repository and remove the ones that add no protection.
 ```
 
 ## Inspiration

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Prune Tests"
+  short_description: "Give every test a verdict and remove the ones that add nothing"
