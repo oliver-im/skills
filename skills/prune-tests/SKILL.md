@@ -47,10 +47,10 @@ Judge removals together against the suite that will remain. For each removal, re
 
 Before removing a test that uniquely catches something, add or strengthen the replacement protection first, following write-tests.
 
-When the code a test covers has no production caller, decide with that code rather than the test: recommend deleting both, or keep both and record what they are waiting on. Removing only the tests leaves untested dead code.
+When the code a test covers has no production caller, decide with that code rather than the test. This includes a branch that upstream validation makes unreachable and an option no caller passes. Delete both, unless a plan records a future use for the code; then keep both and note that plan. Removing only the tests leaves untested dead code. After deleting code, check whether it was the last caller of anything else.
 
 ## Apply and verify
 
-When cleanup is requested, make the changes on a focused branch. Afterward, rerun the suite and the same mutation run or fault probes. Every fault caught before must still be caught, apart from ones you deliberately accepted and explained. This establishes preservation for the exercised faults, not all possible regressions. A green suite alone does not show that protection survived. Run the repository's required gates.
+When cleanup is requested, make the changes on a focused branch, and update anything that names a removed test or deleted code, such as docs and agent guidance, in the same change. Afterward, rerun the suite and the same mutation run or fault probes. Every fault caught before must still be caught, apart from ones you deliberately accepted and explained. This establishes preservation for the exercised faults, not all possible regressions. A green suite alone does not show that protection survived. Run the repository's required gates.
 
 Report verdict counts, tests and lines removed, suite time before and after, mutation or probe results before and after, the keeps that rest on reasoning rather than a caught fault, the unresolved entries, and the scope not yet swept. For a review-only request, report proposed changes and available evidence without implying that changes or post-change checks ran.
